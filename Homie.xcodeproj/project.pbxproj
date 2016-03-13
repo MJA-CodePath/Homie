@@ -7,14 +7,22 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		CA93A06A4D3DC85C4F98FF34 /* Pods_Homie.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F658EF1B53F16B52E954F9F /* Pods_Homie.framework */; };
 		DDB33FFF1C94C4D100DA7042 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDB33FFE1C94C4D100DA7042 /* AppDelegate.swift */; };
 		DDB340011C94C4D100DA7042 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDB340001C94C4D100DA7042 /* ViewController.swift */; };
 		DDB340041C94C4D100DA7042 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DDB340021C94C4D100DA7042 /* Main.storyboard */; };
 		DDB340061C94C4D100DA7042 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DDB340051C94C4D100DA7042 /* Assets.xcassets */; };
 		DDB340091C94C4D100DA7042 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DDB340071C94C4D100DA7042 /* LaunchScreen.storyboard */; };
+		DDB340111C94C5CC00DA7042 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDB340101C94C5CC00DA7042 /* LoginViewController.swift */; };
+		DDB340131C94C5DB00DA7042 /* CreateAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDB340121C94C5DB00DA7042 /* CreateAccountViewController.swift */; };
+		DDB340151C94CB3400DA7042 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDB340141C94CB3400DA7042 /* Constants.swift */; };
+		DDB340171C94D1CD00DA7042 /* DataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDB340161C94D1CD00DA7042 /* DataService.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		2FA7D86874BFC1537DEB2C02 /* Pods-Homie.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Homie.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Homie/Pods-Homie.debug.xcconfig"; sourceTree = "<group>"; };
+		5F658EF1B53F16B52E954F9F /* Pods_Homie.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Homie.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		BBAF304A028DAD4674BED5D6 /* Pods-Homie.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Homie.release.xcconfig"; path = "Pods/Target Support Files/Pods-Homie/Pods-Homie.release.xcconfig"; sourceTree = "<group>"; };
 		DDB33FFB1C94C4D100DA7042 /* Homie.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Homie.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DDB33FFE1C94C4D100DA7042 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DDB340001C94C4D100DA7042 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -22,6 +30,10 @@
 		DDB340051C94C4D100DA7042 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		DDB340081C94C4D100DA7042 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		DDB3400A1C94C4D100DA7042 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		DDB340101C94C5CC00DA7042 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		DDB340121C94C5DB00DA7042 /* CreateAccountViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateAccountViewController.swift; sourceTree = "<group>"; };
+		DDB340141C94CB3400DA7042 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		DDB340161C94D1CD00DA7042 /* DataService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -29,17 +41,37 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CA93A06A4D3DC85C4F98FF34 /* Pods_Homie.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		8E78F86B84D454F5D69E26D4 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				2FA7D86874BFC1537DEB2C02 /* Pods-Homie.debug.xcconfig */,
+				BBAF304A028DAD4674BED5D6 /* Pods-Homie.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		BCD04D61038C89AF9C681A73 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				5F658EF1B53F16B52E954F9F /* Pods_Homie.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		DDB33FF21C94C4D100DA7042 = {
 			isa = PBXGroup;
 			children = (
 				DDB33FFD1C94C4D100DA7042 /* Homie */,
 				DDB33FFC1C94C4D100DA7042 /* Products */,
+				8E78F86B84D454F5D69E26D4 /* Pods */,
+				BCD04D61038C89AF9C681A73 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -60,6 +92,10 @@
 				DDB340051C94C4D100DA7042 /* Assets.xcassets */,
 				DDB340071C94C4D100DA7042 /* LaunchScreen.storyboard */,
 				DDB3400A1C94C4D100DA7042 /* Info.plist */,
+				DDB340101C94C5CC00DA7042 /* LoginViewController.swift */,
+				DDB340121C94C5DB00DA7042 /* CreateAccountViewController.swift */,
+				DDB340141C94CB3400DA7042 /* Constants.swift */,
+				DDB340161C94D1CD00DA7042 /* DataService.swift */,
 			);
 			path = Homie;
 			sourceTree = "<group>";
@@ -71,9 +107,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = DDB3400D1C94C4D100DA7042 /* Build configuration list for PBXNativeTarget "Homie" */;
 			buildPhases = (
+				D6531B042A77488C3B4F6D8C /* Check Pods Manifest.lock */,
 				DDB33FF71C94C4D100DA7042 /* Sources */,
 				DDB33FF81C94C4D100DA7042 /* Frameworks */,
 				DDB33FF91C94C4D100DA7042 /* Resources */,
+				D06915ABCE5E8765A8EEF659 /* Embed Pods Frameworks */,
+				00988A0FF2575CD62EF427A6 /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -131,11 +170,63 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		00988A0FF2575CD62EF427A6 /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Homie/Pods-Homie-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		D06915ABCE5E8765A8EEF659 /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Homie/Pods-Homie-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		D6531B042A77488C3B4F6D8C /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		DDB33FF71C94C4D100DA7042 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DDB340151C94CB3400DA7042 /* Constants.swift in Sources */,
+				DDB340131C94C5DB00DA7042 /* CreateAccountViewController.swift in Sources */,
+				DDB340111C94C5CC00DA7042 /* LoginViewController.swift in Sources */,
+				DDB340171C94D1CD00DA7042 /* DataService.swift in Sources */,
 				DDB340011C94C4D100DA7042 /* ViewController.swift in Sources */,
 				DDB33FFF1C94C4D100DA7042 /* AppDelegate.swift in Sources */,
 			);
@@ -246,6 +337,7 @@
 		};
 		DDB3400E1C94C4D100DA7042 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2FA7D86874BFC1537DEB2C02 /* Pods-Homie.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = Homie/Info.plist;
@@ -257,6 +349,7 @@
 		};
 		DDB3400F1C94C4D100DA7042 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = BBAF304A028DAD4674BED5D6 /* Pods-Homie.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = Homie/Info.plist;
@@ -285,6 +378,7 @@
 				DDB3400F1C94C4D100DA7042 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
