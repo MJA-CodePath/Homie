@@ -28,6 +28,10 @@ Users of the app will drop a pin at their location when they see someone who nee
 ## Data Schema:
 ![dataschema](data_schema.jpg)
 
+## Walkthroughs
+Sprint 1:
+![Sprint1](sprint1.gif)
+
 ## License
 
     Copyright (c) 2016 MJA-CodePath
