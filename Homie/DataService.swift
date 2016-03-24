@@ -9,7 +9,7 @@
 import UIKit
 import Firebase
 
-let BASE_URL = "https://mja.firebaseio.com/"
+let BASE_URL = "https://mjahomie.firebaseio.com/"
 
 class DataService {
     static let dataService = DataService()
