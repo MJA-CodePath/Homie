@@ -35,9 +35,11 @@ class DataService {
         return currentUser!
     }
     
-    /*var MAP_REF: Firebase {
-        return _JOKE_REF
-    }*/
+    //Added this function on April 
+    var CURRENT_USER_ID: String{
+        let userID = NSUserDefaults.standardUserDefaults().valueForKey("uid") as! String
+        return userID
+    }
     
     func createNewAccount(uid: String, user: Dictionary<String, String>) {
         
