@@ -7,10 +7,11 @@
 //
 
 import UIKit
+import Firebase
 
 class ProfileViewController: UIViewController {
 //Added this line on April 3, 2016
-let currentUser: NSString = DataService.dataService.CURRENT_USER_ID
+    let currentUser: NSString = DataService.dataService.CURRENT_USER_ID
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,6 +24,7 @@ let currentUser: NSString = DataService.dataService.CURRENT_USER_ID
             //Storyboard links will be made in milestone 3
             //self.username.text = abc
             print("\(snapshot.key) -> \(snapshot.value)")
+        })
         
 
 
@@ -30,8 +32,7 @@ let currentUser: NSString = DataService.dataService.CURRENT_USER_ID
     }
     
     
-    
-    @IBAction func logout(sender: AnyObject) {
+    func logout() {
         
         DataService.dataService.CURRENT_USER_REF.unauth()
         //unauth is what firebase uses to logout user
@@ -47,10 +48,6 @@ let currentUser: NSString = DataService.dataService.CURRENT_USER_ID
         
     }
 
-    
-    
-    
-    
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
