@@ -12,11 +12,29 @@ import UIKit
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-
+    let storyboard = UIStoryboard(name: "Main", bundle: nil)
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(AppDelegate.userDidLogout), name: userDidLogoutNotification, object: nil)
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(AppDelegate.userDidLogin), name: userDidLoginNotification, object: nil)
+        
+        if User.currentUser != nil {
+            print("Current user detected: \(User.currentUser!.username!)")
+            userDidLogin()
+        }
         return true
+    }
+    
+    func userDidLogin() {
+        let vc = storyboard.instantiateViewControllerWithIdentifier("Map View Controller")
+        window?.rootViewController = vc
+    }
+    
+    func userDidLogout() {
+        let vc = storyboard.instantiateInitialViewController()
+        window?.rootViewController = vc
     }
 
     func applicationWillResignActive(application: UIApplication) {

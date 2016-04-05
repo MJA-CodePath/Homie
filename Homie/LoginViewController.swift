@@ -17,7 +17,6 @@ class LoginViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
         // Do any additional setup after loading the view.
     }
 
@@ -25,55 +24,34 @@ class LoginViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    override func viewDidAppear(animated: Bool) {
-        super.viewDidAppear(animated)
-        
-        // If we have the uid stored, the user is already logger in - no need to sign in again!
-        
-        if NSUserDefaults.standardUserDefaults().valueForKey("uid") != nil && DataService.dataService.CURRENT_USER_REF.authData != nil {
-            self.performSegueWithIdentifier("CurrentlyLoggedIn", sender: nil)
-        }
-    }
+
     
     @IBAction func tryLogin(sender: AnyObject) {
         
         let email = emailField.text
         let password = passwordField.text
         
-        if email != "" && password != "" {
-            
-            // Login with the Firebase's authUser method
-            
-            DataService.dataService.BASE_REF.authUser(email, password: password, withCompletionBlock: { error, authData in
-                
+        if (email != nil && password != nil) {
+            DataService.sharedInstance.login(email!, password: password!, completion: { (user, error) in
                 if error != nil {
-                    print(error)
                     self.loginErrorAlert("Oops!", message: "Check your username and password.")
+                } else if let loggedInUser = user {
+                    User.currentUser = loggedInUser
+                    NSNotificationCenter.defaultCenter().postNotificationName(userDidLoginNotification, object: nil)
                 } else {
-                    
-                    // Be sure the correct uid is stored.
-                    
-                    NSUserDefaults.standardUserDefaults().setValue(authData.uid, forKey: "uid")
-                    
-                    // Enter the app!
-                    
-                    self.performSegueWithIdentifier("CurrentlyLoggedIn", sender: nil)
+                    self.loginErrorAlert("Oops!", message: "Something went wrong")
                 }
             })
-            
         } else {
-            
-            // There was a problem
-            
             loginErrorAlert("Oops!", message: "Don't forget to enter your email and password.")
         }
         
     }
     
+    
     func loginErrorAlert(title: String, message: String) {
         
         // Called upon login error to let the user know login didn't work.
-        
         let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.Alert)
         let action = UIAlertAction(title: "Ok", style: .Default, handler: nil)
         alert.addAction(action)

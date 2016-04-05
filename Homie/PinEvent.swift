@@ -107,7 +107,7 @@ class PinEvent: NSObject {
             if let imageData = objects["images"] as? [NSString] {
                 newEvent.eventImages = getImagesFromString(imageData)
             }
-            pinEvents.append(PinEvent(lon: 1.0, lat: 1.0, na: "Name"))
+            pinEvents.append(newEvent)
         }
         return pinEvents
     }

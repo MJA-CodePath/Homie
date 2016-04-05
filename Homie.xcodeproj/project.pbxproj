@@ -19,7 +19,6 @@
 		DDB340091C94C4D100DA7042 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DDB340071C94C4D100DA7042 /* LaunchScreen.storyboard */; };
 		DDB340111C94C5CC00DA7042 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDB340101C94C5CC00DA7042 /* LoginViewController.swift */; };
 		DDB340131C94C5DB00DA7042 /* CreateAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDB340121C94C5DB00DA7042 /* CreateAccountViewController.swift */; };
-		DDB340151C94CB3400DA7042 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDB340141C94CB3400DA7042 /* Constants.swift */; };
 		DDB340171C94D1CD00DA7042 /* DataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDB340161C94D1CD00DA7042 /* DataService.swift */; };
 /* End PBXBuildFile section */
 
@@ -40,7 +39,6 @@
 		DDB3400A1C94C4D100DA7042 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		DDB340101C94C5CC00DA7042 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		DDB340121C94C5DB00DA7042 /* CreateAccountViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateAccountViewController.swift; sourceTree = "<group>"; };
-		DDB340141C94CB3400DA7042 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		DDB340161C94D1CD00DA7042 /* DataService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -116,7 +114,6 @@
 			isa = PBXGroup;
 			children = (
 				DDB33FFE1C94C4D100DA7042 /* AppDelegate.swift */,
-				DDB340141C94CB3400DA7042 /* Constants.swift */,
 				DDB340161C94D1CD00DA7042 /* DataService.swift */,
 				3B6DA79B1CA9FC1500F708EC /* Models */,
 				3BD1D0DD1CA3677F009B19BB /* View Controllers */,
@@ -251,7 +248,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DDB340151C94CB3400DA7042 /* Constants.swift in Sources */,
 				DDB340131C94C5DB00DA7042 /* CreateAccountViewController.swift in Sources */,
 				3BD1D0DF1CA36D95009B19BB /* EventViewController.swift in Sources */,
 				3B6DA79D1CA9FC3300F708EC /* PinEvent.swift in Sources */,

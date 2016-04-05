@@ -9,43 +9,88 @@
 import UIKit
 import Firebase
 
-let BASE_URL = "https://mjahomie.firebaseio.com/"
+let BASE_URL = "https://mjahomie.firebaseio.com/" as String
 
 class DataService {
-    static let dataService = DataService()
+    private var baseURL: String
+    private var _base_ref: Firebase
+    private var _user_ref: Firebase
+    private var _event_ref: Firebase
     
-    private var _BASE_REF = Firebase(url: "\(BASE_URL)")
-    private var _USER_REF = Firebase(url: "\(BASE_URL)/users")
-    //private var _MAP_REF = Firebase(url: "\(BASE_URL)/map")
-    //not sure how map works but there will be a specific data set for maps under user
     
-    var BASE_REF: Firebase {
-        return _BASE_REF
+    
+    init(bURL: String) {
+        baseURL = bURL
+        _base_ref = Firebase(url: baseURL)
+        _user_ref = _base_ref.childByAppendingPath("user/")
+        _event_ref = _base_ref.childByAppendingPath("pinEvents/")
     }
     
-    var USER_REF: Firebase {
-        return _USER_REF
+    class var sharedInstance: DataService {
+        struct Static {
+            static let dataService = DataService(bURL: BASE_URL)
+        }
+        return Static.dataService
     }
     
-    var CURRENT_USER_REF: Firebase {
-        let userID = NSUserDefaults.standardUserDefaults().valueForKey("uid") as! String
-        
-        let currentUser = Firebase(url: "\(BASE_REF)").childByAppendingPath("users").childByAppendingPath(userID)
-        
-        return currentUser!
+    
+    func login(email: String, password: String, completion: (user: User?, error: NSError?) -> ()) {
+        _base_ref.authUser(email, password: password) { (err: NSError!, data: FAuthData!) in
+            if err != nil {
+                print(err)
+                completion(user: nil, error: err)
+            } else {
+                let loggedInUser = self._user_ref.childByAppendingPath(data.uid)
+                loggedInUser.observeEventType(.Value, withBlock: {
+                    snapshot in
+                    print("\(snapshot.key) -> \(snapshot.value)")
+                    if let _ = snapshot {
+                        if let data = snapshot.value as? NSDictionary {
+                            let newUser = User.createUser(data)
+                            completion(user: newUser, error: nil)
+                        }
+                    }
+                })
+            }
+        }
     }
     
-    //Added this function on April 
-    var CURRENT_USER_ID: String{
-        let userID = NSUserDefaults.standardUserDefaults().valueForKey("uid") as! String
-        return userID
+
+    func createNewAccount(email: String, password: String, username: String, completion: (user: User?, error: NSError?) -> ()) {
+        _base_ref.createUser(email, password: password) { (err: NSError!) in
+            if err != nil {
+                completion(user: nil, error: err)
+            } else {
+                self._base_ref.authUser(email, password: password, withCompletionBlock: { (erro: NSError!, data: FAuthData!) in
+                    if erro != nil {
+                        print(erro)
+                        completion(user: nil, error: erro)
+                    } else {
+                        let passUser = ["uid" : data.uid,
+                                        "email" : email,
+                                        "username" : username] as NSDictionary
+                        self._user_ref.childByAppendingPath(data.uid).setValue(passUser)
+                        let newUser = User.createUser(passUser)
+                        completion(user: newUser, error: nil)
+                    }
+                })
+            }
+        }
     }
     
-    func createNewAccount(uid: String, user: Dictionary<String, String>) {
-        
-        // A User is created.
-        
-        USER_REF.childByAppendingPath(uid).setValue(user)
-        //set value is what sends data to firebase, in this case it sent data of a created user to firebase
+    
+    func getUser(uid: String) -> User? {
+        var gotUser: User?
+        let userPath = _user_ref.childByAppendingPath(uid)
+        userPath.observeEventType(.Value, withBlock: {
+            snapshot in
+            if let _ = snapshot {
+                if let data = snapshot.value as? NSDictionary {
+                    gotUser = User.createUser(data)
+                }
+            }
+        })
+        return gotUser
     }
+    
 }

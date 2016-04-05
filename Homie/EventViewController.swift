@@ -7,18 +7,42 @@
 //
 
 import UIKit
+import MapKit
 
-class EventViewController: UIViewController {
+class EventViewController: UIViewController, MKMapViewDelegate {
 
+    @IBOutlet weak var map: MKMapView!
+    
+    
+    var coordinate: CLLocationCoordinate2D?
+    var editable: Bool?
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+        self.map.delegate = self
+        
+        let enclosure: CLLocationDistance = 1000
+        let coordinateRegion = MKCoordinateRegionMakeWithDistance(coordinate!, enclosure, enclosure)
+        map.setRegion(coordinateRegion,animated: true)
+        map.setCenterCoordinate(coordinate!, animated: true)
+        
+        let annotation = MKPointAnnotation()
+        annotation.coordinate = coordinate!
+        map.addAnnotation(annotation)
+        
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    }
+    
+    
+    @IBAction func onSaveEvent() {
+        
+        //save to firebase firebase
+        
+        dismissViewControllerAnimated(true, completion: nil)
     }
     
 
