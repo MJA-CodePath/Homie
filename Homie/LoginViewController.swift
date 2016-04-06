@@ -3,7 +3,6 @@
 //  Homie
 //
 //  Created by Alishah on 3/12/16.
-//  Copyright © 2016 Alishah. All rights reserved.
 //
 
 import UIKit
@@ -12,25 +11,18 @@ import Firebase
 class LoginViewController: UIViewController {
 
     @IBOutlet weak var emailField: UITextField!
-    
     @IBOutlet weak var passwordField: UITextField!
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-
     
     @IBAction func tryLogin(sender: AnyObject) {
-        
         let email = emailField.text
         let password = passwordField.text
-        
         if (email != nil && password != nil) {
             DataService.sharedInstance.login(email!, password: password!, completion: { (user, error) in
                 if error != nil {
@@ -39,7 +31,7 @@ class LoginViewController: UIViewController {
                     User.currentUser = loggedInUser
                     NSNotificationCenter.defaultCenter().postNotificationName(userDidLoginNotification, object: nil)
                 } else {
-                    self.loginErrorAlert("Oops!", message: "Something went wrong")
+                    self.loginErrorAlert("Oops!", message: "Something went wrong.")
                 }
             })
         } else {
@@ -50,7 +42,6 @@ class LoginViewController: UIViewController {
     
     
     func loginErrorAlert(title: String, message: String) {
-        
         // Called upon login error to let the user know login didn't work.
         let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.Alert)
         let action = UIAlertAction(title: "Ok", style: .Default, handler: nil)
@@ -58,6 +49,11 @@ class LoginViewController: UIViewController {
         presentViewController(alert, animated: true, completion: nil)
     }
     
+    
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
+    }
     
 
     /*

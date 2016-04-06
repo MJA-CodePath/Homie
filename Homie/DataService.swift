@@ -3,7 +3,6 @@
 //  Homie
 //
 //  Created by Alishah on 3/12/16.
-//  Copyright © 2016 Alishah. All rights reserved.
 //
 
 import UIKit
@@ -16,8 +15,6 @@ class DataService {
     private var _base_ref: Firebase
     private var _user_ref: Firebase
     private var _event_ref: Firebase
-    
-    
     
     init(bURL: String) {
         baseURL = bURL
@@ -33,6 +30,7 @@ class DataService {
         return Static.dataService
     }
     
+    /*USER RELATED FUNCTIONS*/
     
     func login(email: String, password: String, completion: (user: User?, error: NSError?) -> ()) {
         _base_ref.authUser(email, password: password) { (err: NSError!, data: FAuthData!) in
@@ -92,5 +90,33 @@ class DataService {
         })
         return gotUser
     }
+    
+    
+    /*POST RELATED FUNCTIONS*/
+    
+    
+    func retreivePosts() {
+        
+    }
+    
+    
+    func newPost(post: Post) {
+        let pass = ["userID" : (post.user?.uid)!,
+                    "text" : post.text!,
+                    "created_at" : post.createdAtString!,
+                    "id" : post.ID!,
+                    "eventID" : (post.event?.id)!] as NSDictionary
+        let postPath = _user_ref.childByAppendingPath(post.user!.uid).childByAutoId()
+        postPath.setValue(pass)
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
 }

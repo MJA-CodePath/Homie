@@ -3,58 +3,76 @@
 //  Homie
 //
 //  Created by Justin Hill on 3/28/16.
-//  Copyright © 2016 Alishah. All rights reserved.
 //
 
 import UIKit
 import Firebase
+import MapKit
 
 class PinEvent: NSObject {
 
-    var longitude: Float
-    var latitude: Float
+    var id: String?
+    var coordinate: CLLocationCoordinate2D?
+    var longitude: Double
+    var latitude: Double
     var name: String
     var eventDescription: String?
-    var eventImages: [UIImage]
-    var items: [String]
+    var eventImages: [UIImage]?
+    var posts: [Post]?
     
-    init(lon: Float, lat: Float, na: String) {
+    init(lon: Double, lat: Double, na: String, pid: String?) {
         //Initialize class vars
         longitude = lon
         latitude = lat
+        coordinate = CLLocationCoordinate2D(latitude: lon, longitude: lat)
         name = na
+        id = pid
         eventImages = [UIImage]()
-        items = [String]()
+        posts = [Post]()
     }
 
     
-    class func saveNewPin(na: String, lon: Float, lat: Float) {
+    class func saveNewPin(na: String, lon: Double, lat: Double) -> PinEvent {
         let eventsRef = Firebase(url:"https://mjahomie.firebaseio.com/pinEvents/")
-        let passPin = ["name" : na,
-                      "longitude" : lon.description,
-                      "latitude" : lat.description,
-                      "items" : [String](),
-                      "images" : [String]()] as NSDictionary
-        eventsRef.childByAppendingPath(na).setValue(passPin)
+        let newPinRef = eventsRef.childByAutoId()
+        let id = newPinRef.key
+        let passPin = ["id" : id,
+                       "name" : na,
+                       "longitude" : lon.description,
+                       "latitude" : lat.description,
+                       "posts" : [Post](),
+                       "images" : [String]()] as NSDictionary
+        newPinRef.setValue(passPin)
+        return PinEvent(lon: lon, lat: lat, na: na, pid: id)
     }
     
     
-    class func updatePin(pinEvent: PinEvent, na: String, ed: String?, ei: UIImage?, it: [String]?) {
-        let eventRef = Firebase(url:"https://mjahomie.firebaseio.com/pinEvents/\(na)")
+    class func updatePin(pinEvent: PinEvent, na: String?, ed: String?, ei: UIImage?, it: [Post]?) {
+        let eventRef = Firebase(url:"https://mjahomie.firebaseio.com/pinEvents/\(pinEvent.id!)")
+        if na != nil {
+            pinEvent.name = na!
+            eventRef.childByAppendingPath("name")
+        }
         if ed != nil {
             pinEvent.eventDescription = ed
             eventRef.childByAppendingPath("description").setValue(ed)
         }
         if ei != nil {
-            let index = pinEvent.eventImages.count + 1
-            pinEvent.eventImages.append(ei!)
+            if pinEvent.eventImages == nil {
+                pinEvent.eventImages = [UIImage]()
+            }
+            let index = pinEvent.eventImages!.count + 1
+            pinEvent.eventImages!.append(ei!)
             if let imageString = getStringFromImage(ei) {
                 eventRef.childByAppendingPath("images").updateChildValues([index : imageString])
             }
         }
         if it != nil {
-            var index = pinEvent.items.count + 1
-            pinEvent.items.appendContentsOf(it!)
+            if pinEvent.posts == nil {
+                pinEvent.posts = [Post]()
+            }
+            var index = pinEvent.posts!.count + 1
+            pinEvent.posts!.appendContentsOf(it!)
             let passItems = NSDictionary()
             for thing in it! {
                 passItems.setValue(thing, forKey: index.description)
@@ -65,14 +83,13 @@ class PinEvent: NSObject {
     }
     
     
-    class func retrievePins() -> [PinEvent] {
+    class func retrievePins(completion: (PinEvents: [PinEvent], error: NSError?) -> ()) {
         let myRootRef = Firebase(url:"https://mjahomie.firebaseio.com/pinEvents")
-        var pinEvents = [PinEvent]()
         myRootRef.observeEventType(.Value, withBlock: {
             snapshot in
-            pinEvents =  pinsArray(snapshot.value as! [NSDictionary])
+            print("\(snapshot.key) -> \(snapshot.value)")
+            completion(PinEvents: pinsArray(snapshot.value as! NSDictionary), error: nil)
         })
-        return pinEvents
     }
     
     
@@ -98,16 +115,21 @@ class PinEvent: NSObject {
     }
     
     
-    class func pinsArray(dictionary: [NSDictionary]) -> [PinEvent] {
+    class func pinsArray(dictionary: NSDictionary) -> [PinEvent] {
         var pinEvents = [PinEvent]()
-        for objects in dictionary {
-            let newEvent = PinEvent(lon: objects["longitude"] as! Float, lat: objects["latitude"] as! Float, na: objects["name"] as! String)
-            newEvent.eventDescription = objects["description"] as? String
-            newEvent.items = (objects["items"] as? [String])!
-            if let imageData = objects["images"] as? [NSString] {
-                newEvent.eventImages = getImagesFromString(imageData)
+        if let allKeys = dictionary.allKeys as? [String] {
+            for key in allKeys {
+                let objects = dictionary[key] as! NSDictionary
+                let longit = objects["longitude"] as? NSString
+                let latit = objects["latitude"] as? NSString
+                let newEvent = PinEvent(lon: (longit?.doubleValue)!, lat: (latit?.doubleValue)!, na: objects["name"] as! String, pid: objects["id"] as? String)
+                newEvent.eventDescription = objects["description"] as? String
+                newEvent.posts = objects["posts"] as? [Post]
+                if let imageData = objects["images"] as? [NSString] {
+                    newEvent.eventImages = getImagesFromString(imageData)
+                }
+                pinEvents.append(newEvent)
             }
-            pinEvents.append(newEvent)
         }
         return pinEvents
     }

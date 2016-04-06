@@ -3,28 +3,51 @@
 //  Homie
 //
 //  Created by Alishah on 3/12/16.
-//  Copyright © 2016 Alishah. All rights reserved.
 //
 
 import UIKit
 import MapKit
 
-class ViewController: UIViewController, MKMapViewDelegate {
+class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDelegate {
 
     @IBOutlet weak var map: MKMapView!
-    var toAddCoor: CLLocationCoordinate2D?
+    @IBOutlet weak var displayControl: UISegmentedControl!
     
+    var toAddCoor: CLLocationCoordinate2D?
     var added = false
+    var eventPins: [PinEvent] = []
+    let locationManager = CLLocationManager()
+    
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.map.delegate = self
-    }
-    
-    override func viewDidAppear(animated: Bool) {
-        super.viewDidAppear(animated)
+        map.delegate = self
+        locationManager.requestWhenInUseAuthorization()
+        locationManager.delegate = self
+        locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
+        if CLLocationManager.authorizationStatus() == .AuthorizedWhenInUse {
+            locationManager.startUpdatingLocation()
+            centerMapOnLocation(locationManager.location!)
+        }
+        PinEvent.retrievePins { (PinEvents, error) in
+            if error == nil {
+                self.eventPins = PinEvents
+                for events in self.eventPins {
+                    self.placePin(events.coordinate!, pinEvent: events)
+                }
+            } else {
+                print("FFFF")
+            }
+        }
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ViewController.profileSegue), name: userWasCreatedNotification, object: nil)
     }
+    
+    
+    @IBAction func onMenuButton(sender: AnyObject) {
+        
+    }
+    
     
     func profileSegue() {
         performSegueWithIdentifier("profileSegue", sender: true)
@@ -35,39 +58,59 @@ class ViewController: UIViewController, MKMapViewDelegate {
         performSegueWithIdentifier("profileSegue", sender: false)
     }
     
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-    }
 
     @IBAction func onMapLongPress(sender: UILongPressGestureRecognizer) {
         if sender.state == .Began {
             print("Long pressed.")
             let touchPoint = sender.locationInView(map)
             toAddCoor = map.convertPoint(touchPoint, toCoordinateFromView: map)
-            placePin(toAddCoor!)
+            placePin(toAddCoor!, pinEvent: nil)
             performSegueWithIdentifier("addPinSegue", sender: true)
         }
     }
     
-    func placePin(coor: CLLocationCoordinate2D) {
+    
+    func placePin(coor: CLLocationCoordinate2D, pinEvent: PinEvent?) {
+        print("lat: \(coor.latitude.description), lon: \(coor.longitude.description)")
         let annotation = MKPointAnnotation()
         annotation.coordinate = coor
-        //annotation.title = "(\(annotation.coordinate.latitude),\(annotation.coordinate.longitude))"
+        if pinEvent != nil {
+            annotation.title = pinEvent!.name
+            annotation.subtitle = pinEvent!.description
+        }
         map.addAnnotation(annotation)
+    }
+    
+    
+    let regionRadius: CLLocationDistance = 2000
+    func centerMapOnLocation(location: CLLocation) {
+        let coordinateRegion = MKCoordinateRegionMakeWithDistance(location.coordinate,
+                                                                  regionRadius * 2.0, regionRadius * 2.0)
+        map.setRegion(coordinateRegion, animated: true)
     }
     
     
     func mapView(mapView: MKMapView, didSelectAnnotationView view: MKAnnotationView) {
         print("pin tapped, view pin")
-        performSegueWithIdentifier("showPinSegue", sender: false)
+        performSegueWithIdentifier("addPinSegue", sender: false)
         map.deselectAnnotation(view.annotation, animated: false)
     }
     
     
+    func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        //let locValue:CLLocationCoordinate2D = manager.location!.coordinate
+        //print("locations = \(locValue.latitude) \(locValue.longitude)")
+    }
     
+    
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+    }
+    
+    
+    // MARK: - Navigation
 
-     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "addPinSegue" {
             let vc = segue.destinationViewController as! EventViewController
             vc.coordinate = toAddCoor

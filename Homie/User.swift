@@ -3,7 +3,6 @@
 //  Homie
 //
 //  Created by Justin Hill on 3/28/16.
-//  Copyright © 2016 Alishah. All rights reserved.
 //
 
 import UIKit
@@ -21,7 +20,7 @@ class User: NSObject {
     var username: String?
     var biography: String?
     var photos: [UIImage]?
-    var activity: [PinEvent]?
+    var activity: [Post]?
     var dictionary: NSDictionary?
     
     init(na: String?, un: String, bio: String?) {
@@ -39,8 +38,8 @@ class User: NSObject {
             if let imageArray = dictionary["photos"] as? [NSString] {
                 newUser.photos = PinEvent.getImagesFromString(imageArray)
             }
-            if let pinArray = dictionary["activity"] as? [NSDictionary] {
-                newUser.activity = PinEvent.pinsArray(pinArray)
+            if let pinArray = dictionary["activity"] as? NSDictionary {
+                newUser.activity = Post.postsWithArray(pinArray)
             }
             return newUser
         } else {

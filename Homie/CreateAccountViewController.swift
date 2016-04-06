@@ -3,7 +3,6 @@
 //  Homie
 //
 //  Created by Alishah on 3/12/16.
-//  Copyright © 2016 Alishah. All rights reserved.
 //
 
 import UIKit
@@ -18,16 +17,9 @@ class CreateAccountViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
         // Do any additional setup after loading the view.
     }
 
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-    
     
     @IBAction func createAccount(sender: AnyObject) {
         let username = usernameField.text
@@ -36,16 +28,18 @@ class CreateAccountViewController: UIViewController {
         if username != "" && email != "" && password != "" {
             DataService.sharedInstance.createNewAccount(email!, password: password!, username: username!, completion: { (user, error) in
                 if error != nil {
-                    self.signupErrorAlert("Whoops!", message: "Having some trouble creating your account. Try again.")
+                    self.signupErrorAlert("Oops!", message: "Having some trouble creating your account. Try again.")
                     print(error)
-                } else {
-                    User.currentUser = user
+                } else if let loggedInUser = user {
+                    User.currentUser = loggedInUser
                     NSNotificationCenter.defaultCenter().postNotificationName(userDidLoginNotification, object: nil)
                     NSNotificationCenter.defaultCenter().postNotificationName(userWasCreatedNotification, object: nil)
+                } else {
+                    self.signupErrorAlert("Oops!", message: "Something went wrong.")
                 }
             })
         } else {
-            signupErrorAlert("Whoops!", message: "Don't forget to enter your email, password, and a username.")
+            signupErrorAlert("Oops!", message: "Don't forget to enter your email, password, and a username.")
         }
     }
     
@@ -56,13 +50,17 @@ class CreateAccountViewController: UIViewController {
     
     
     func signupErrorAlert(title: String, message: String) {
-        
         // Called upon signup error to let the user know signup didn't work.
-        
         let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.Alert)
         let action = UIAlertAction(title: "Ok", style: .Default, handler: nil)
         alert.addAction(action)
         presentViewController(alert, animated: true, completion: nil)
+    }
+    
+    
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
     }
     
  
