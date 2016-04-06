@@ -14,6 +14,7 @@ class ActivityCell: UITableViewCell {
     @IBOutlet weak var timeLabel: UILabel!
     var detailsView: Bool?
     
+    
     var post: Post! {
         didSet {
             if detailsView == true {
@@ -25,7 +26,7 @@ class ActivityCell: UITableViewCell {
                 let timeElapsed = NSDate().offsetFrom(post.createdAt!)
                 timeLabel.text = timeElapsed
             }
-            nameLabel.text = post.event?.name
+            nameLabel.text = post.eventName
             postTextLabel.text = post.text
             /*if post.user?.profileImage != nil {
              userAvi.setImageWithURL(NSURL(string: (tweet.user?.profileImageURL)!)!)
@@ -51,7 +52,10 @@ class ActivityCell: UITableViewCell {
         super.setSelected(selected, animated: animated)
         // Configure the view for the selected state
     }
+    
 }
+
+
 
 /* original extension NSDate code retrieved from: http://stackoverflow.com/questions/27182023/getting-the-difference-between-two-nsdates-in-months-days-hours-minutes-seconds
  By: Leo Dabus*/
@@ -82,5 +86,4 @@ extension NSDate {
         if secondsFrom(date) > 0 { return "\(secondsFrom(date))s" }
         return ""
     }
-
 }

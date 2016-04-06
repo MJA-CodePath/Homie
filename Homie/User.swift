@@ -20,35 +20,32 @@ class User: NSObject {
     var username: String?
     var biography: String?
     var photos: [UIImage]?
-    var activity: [Post]?
+    var posts: [Post]?
     var dictionary: NSDictionary?
     
+    
     init(na: String?, un: String, bio: String?) {
-        //initialize user
         name = na
         username = un
         biography = bio
     }
     
-    class func createUser(dictionary: NSDictionary) -> User? {
-        if let newUserName = dictionary["username"] as? String {
-            let newUser = User(na: dictionary["name"] as? String, un: newUserName, bio: dictionary["bio"] as? String)
-            newUser.uid = dictionary["uid"] as? String
-            newUser.dictionary = dictionary
-            if let imageArray = dictionary["photos"] as? [NSString] {
-                newUser.photos = PinEvent.getImagesFromString(imageArray)
-            }
-            if let pinArray = dictionary["activity"] as? NSDictionary {
-                newUser.activity = Post.postsWithArray(pinArray)
-            }
-            return newUser
-        } else {
-            return nil
+    
+    init(dictionary: NSDictionary) {
+        uid = dictionary["uid"] as? String
+        name = dictionary["name"] as? String
+        username = dictionary["username"] as? String
+        biography = dictionary["bio"] as? String
+        if let imageArray = dictionary["photos"] as? [NSString] {
+            photos = DataService.getImagesFromString(imageArray)
+        }
+        if let postArray = dictionary["posts"] as? NSDictionary {
+            posts = Post.postsWithArray(postArray)
         }
     }
     
     
-    func logout() {
+    class func logout() {
         User.currentUser = nil
         NSNotificationCenter.defaultCenter().postNotificationName(userDidLogoutNotification, object: nil)
     }
@@ -63,7 +60,7 @@ class User: NSObject {
                     let dictionary: NSDictionary?
                     do {
                         try dictionary = NSJSONSerialization.JSONObjectWithData(data!, options: .MutableContainers) as? NSDictionary
-                        _currentUser = User.createUser(dictionary!)!
+                        _currentUser = User(dictionary: dictionary!)
                     } catch {
                         print(error)
                     }
@@ -89,8 +86,5 @@ class User: NSObject {
             }
         }
     }
-    
-    
-    
     
 }

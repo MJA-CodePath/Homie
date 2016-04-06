@@ -12,13 +12,11 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
 
     @IBOutlet weak var map: MKMapView!
     @IBOutlet weak var displayControl: UISegmentedControl!
-    
     var toAddCoor: CLLocationCoordinate2D?
     var added = false
     var eventPins: [PinEvent] = []
     let locationManager = CLLocationManager()
     
-
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,9 +26,11 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
         if CLLocationManager.authorizationStatus() == .AuthorizedWhenInUse {
             locationManager.startUpdatingLocation()
-            centerMapOnLocation(locationManager.location!)
+            if let location = locationManager.location {
+                centerMapOnLocation(location)
+            }
         }
-        PinEvent.retrievePins { (PinEvents, error) in
+        DataService.sharedInstance.retrievePins { (PinEvents, error) in
             if error == nil {
                 self.eventPins = PinEvents
                 for events in self.eventPins {
@@ -109,7 +109,6 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
     
     
     // MARK: - Navigation
-
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "addPinSegue" {
             let vc = segue.destinationViewController as! EventViewController
@@ -133,7 +132,6 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
             }
         }
      }
-
 
 }
 

@@ -38,27 +38,20 @@ class EventViewController: UIViewController, MKMapViewDelegate, UITableViewDeleg
         if editable == true {
             nameview.text = "Name"
             nameview.layer.borderWidth = 0.75
+            nameview.userInteractionEnabled = true
             descriptionView.text = "Add description..."
             descriptionView.layer.borderWidth = 0.75
-        } else {
-            endEventEditing()
-        }
-    }
-    
-    
-    override func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(animated)
-        if (editable == true) {
-            nameview.userInteractionEnabled = true
             descriptionView.userInteractionEnabled = true
         } else {
             endEventEditing()
+            nameview.text = pinEvent?.name
+            descriptionView.text = pinEvent?.eventDescription
         }
     }
 
 
     @IBAction func onPost(sender: AnyObject) {
-        performSegueWithIdentifier("postSegue", sender: nil)
+        performSegueWithIdentifier("postSegue", sender: nil)    //sender is pin event
     }
     
     
@@ -66,15 +59,11 @@ class EventViewController: UIViewController, MKMapViewDelegate, UITableViewDeleg
         if title != "" && description != "" {
             let title = nameview.text
             let description = descriptionView.text
-            let newPin = PinEvent.saveNewPin(title!, lon: coordinate!.longitude, lat: coordinate!.latitude)
-            PinEvent.updatePin(newPin, na: nil, ed: description, ei: nil, it: nil)
-            endEventEditing()
+            pinEvent = DataService.sharedInstance.newPin(PinEvent(lon: coordinate!.longitude, lat: coordinate!.latitude, na: title, de: description))
         } else {
             saveEventAlert("Oops!", message: "Don't forget to enter a name and a description.")
         }
     }
-    
-    
     
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -88,7 +77,7 @@ class EventViewController: UIViewController, MKMapViewDelegate, UITableViewDeleg
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("postCell", forIndexPath: indexPath) as! PostCell
-        cell.post = pinEvent?.posts![indexPath.row]
+        cell.post = pinEvent?.posts?[indexPath.row]
         cell.separatorInset = UIEdgeInsetsZero
         cell.layoutMargins = UIEdgeInsetsZero
         cell.aviButton.tag = indexPath.row
@@ -107,12 +96,9 @@ class EventViewController: UIViewController, MKMapViewDelegate, UITableViewDeleg
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier("imageCell", forIndexPath: indexPath) as! ImageCell
-        cell.imageView.image = pinEvent?.eventImages![indexPath.row]
+        cell.imageView.image = pinEvent?.eventImages?[indexPath.row]
         return cell
     }
-    
-    
-    
     
     
     func endEventEditing() {

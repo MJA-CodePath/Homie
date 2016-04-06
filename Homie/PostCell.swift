@@ -17,6 +17,7 @@ class PostCell: UITableViewCell {
     var detailsView: Bool?
     @IBOutlet weak var aviButton: UIButton!
     
+    
     var post: Post! {
         didSet {
             if detailsView == true {
@@ -28,8 +29,8 @@ class PostCell: UITableViewCell {
                 let timeElapsed = NSDate().offsetFrom(post.createdAt!)
                 timeLabel.text = timeElapsed
             }
-            nameLabel.text = post.user?.name
-            usernameLabel.text = "@\((post.user?.username)!)"
+            nameLabel.text = post.userName
+            usernameLabel.text = "@\(post.userUsername)"
             postTextLabel.text = post.text
             userAvi.image = nil
             /*if post.user?.profileImage != nil {
@@ -58,5 +59,6 @@ class PostCell: UITableViewCell {
         super.setSelected(selected, animated: animated)
         // Configure the view for the selected state
     }
+    
 }
 
