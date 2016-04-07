@@ -8,13 +8,14 @@ import UIKit
 
 class PostViewController: UIViewController {
 
-    @IBOutlet weak var postField: UITextField!
-    var post: Post?
+    
+    @IBOutlet weak var postField: UITextView!
+    var event: PinEvent?
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+        postField.text = ""
     }
     
     
@@ -32,12 +33,14 @@ class PostViewController: UIViewController {
     
     
     @IBAction func onPost(sender: AnyObject) {
-        let status = postField.text?.stringByAddingPercentEncodingWithAllowedCharacters(.alphanumericCharacterSet())
+        let status = postField.text
         print("POST: \(status!)")
         if (status?.characters.count <= 140) {
             postField.resignFirstResponder()
-            
-            //DataService.sharedInstance.post()
+            let newPost = Post(eventid: event!.id!, eventname: event!.name, posttext: status)
+            newPost.sendPost()
+        }
+        self.dismissViewControllerAnimated(true) {
         }
     }
     

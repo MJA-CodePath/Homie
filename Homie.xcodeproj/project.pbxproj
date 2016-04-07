@@ -78,11 +78,11 @@
 		3BD1D0DD1CA3677F009B19BB /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				3BD5BB211CB4B0B8006F55C5 /* PostViewController.swift */,
 				DDB340101C94C5CC00DA7042 /* LoginViewController.swift */,
 				DDB340121C94C5DB00DA7042 /* CreateAccountViewController.swift */,
 				DDB340001C94C4D100DA7042 /* ViewController.swift */,
 				3BD1D0DE1CA36D95009B19BB /* EventViewController.swift */,
+				3BD5BB211CB4B0B8006F55C5 /* PostViewController.swift */,
 				3BD1D0E01CA36DA9009B19BB /* ProfileViewController.swift */,
 			);
 			name = "View Controllers";

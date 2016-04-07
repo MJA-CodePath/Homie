@@ -19,15 +19,18 @@ class ProfileViewController: UIViewController, UITableViewDataSource, UITableVie
     @IBOutlet weak var activityTable: UITableView!
     var editable: Bool?
     var user: User?
+    var userID: String?
+    var userDict: NSMutableDictionary?
 
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.*/
         if editable == true {
-            nameView.text = "Name"
+            nameView.text = ""
             nameView.layer.borderWidth = 0.75
             nameView.userInteractionEnabled = true
+            nameView.becomeFirstResponder()
             bioView.text = "Add bio..."
             bioView.layer.borderWidth = 0.75
             bioView.userInteractionEnabled = true
@@ -39,10 +42,26 @@ class ProfileViewController: UIViewController, UITableViewDataSource, UITableVie
     }
     
     
+    @IBAction func onLogout(sender: AnyObject) {
+        User.logout()
+    }
+    
+    
     @IBAction func onSaveButton(sender: AnyObject) {
+        if nameView.text != "" && bioView.text != "" && bioView.text != "Add bio..." {
+            userDict?.setObject(nameView.text, forKey: "name")
+            userDict?.setObject(bioView.text, forKey: "bio")
+            user = DataService.sharedInstance.sendUser(userDict!)
+            createdUser = false
+            endEventEditing()
+        }
         
     }
     
+    @IBAction func onBack(sender: AnyObject) {
+        dismissViewControllerAnimated(true) { 
+        }
+    }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if user?.posts != nil {
@@ -99,14 +118,20 @@ class ProfileViewController: UIViewController, UITableViewDataSource, UITableVie
     }
     
 
-    /*
+    
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
+
+        let vc = segue.destinationViewController as! EventViewController
+        vc.editable = false
+        let postCell = sender as! PostCell
+        vc.pinEventID = postCell.post.eventID
+        
     }
-    */
+    
 
 }

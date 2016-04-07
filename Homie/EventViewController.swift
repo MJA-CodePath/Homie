@@ -19,6 +19,7 @@ class EventViewController: UIViewController, MKMapViewDelegate, UITableViewDeleg
     var coordinate: CLLocationCoordinate2D?
     var editable: Bool?
     var pinEvent: PinEvent?
+    var pinEventID: String?
     
     
     override func viewDidLoad() {
@@ -66,6 +67,12 @@ class EventViewController: UIViewController, MKMapViewDelegate, UITableViewDeleg
     }
     
     
+    @IBAction func onBack(sender: AnyObject) {
+        dismissViewControllerAnimated(true) { 
+        }
+    }
+    
+    
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if pinEvent?.posts != nil {
             return pinEvent!.posts!.count
@@ -82,6 +89,12 @@ class EventViewController: UIViewController, MKMapViewDelegate, UITableViewDeleg
         cell.layoutMargins = UIEdgeInsetsZero
         cell.aviButton.tag = indexPath.row
         return cell
+    }
+    
+    
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        let cell = tableView.cellForRowAtIndexPath(indexPath)
+        performSegueWithIdentifier("eToProfileSegue", sender: cell)
     }
     
     
@@ -123,14 +136,25 @@ class EventViewController: UIViewController, MKMapViewDelegate, UITableViewDeleg
     }
     
     
-    /*
+    
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
+        
+        if segue.identifier == "postSegue" {
+            let vc = segue.destinationViewController as! PostViewController
+            vc.event = pinEvent
+        } else if segue.identifier == "eToProfileSegue" {
+            let vc = segue.destinationViewController as! ProfileViewController
+            let postCell = sender as! PostCell
+            vc.userID = postCell.post.userID
+            vc.editable = false
+        }
+        
     }
-    */
+    
 
 }

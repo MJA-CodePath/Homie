@@ -42,6 +42,7 @@ class User: NSObject {
         if let postArray = dictionary["posts"] as? NSDictionary {
             posts = Post.postsWithArray(postArray)
         }
+        self.dictionary = dictionary
     }
     
     

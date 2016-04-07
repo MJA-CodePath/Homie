@@ -57,26 +57,32 @@ class DataService {
     }
     
 
-    func createNewAccount(email: String, password: String, username: String, completion: (user: User?, error: NSError?) -> ()) {
+    func createNewAccount(email: String, password: String, username: String, completion: (userDict: NSMutableDictionary?, error: NSError?) -> ()) {
         _base_ref.createUser(email, password: password) { (err: NSError!) in
             if err != nil {
-                completion(user: nil, error: err)
+                completion(userDict: nil, error: err)
             } else {
                 self._base_ref.authUser(email, password: password, withCompletionBlock: { (erro: NSError!, data: FAuthData!) in
                     if erro != nil {
                         print(erro)
-                        completion(user: nil, error: erro)
+                        completion(userDict: nil, error: erro)
                     } else {
                         let passUser = ["uid" : data.uid,
                                         "email" : email,
-                                        "username" : username] as NSDictionary
-                        self._user_ref.childByAppendingPath(data.uid).setValue(passUser)
-                        let newUser = User(dictionary: passUser)
-                        completion(user: newUser, error: nil)
+                                        "username" : username] as NSMutableDictionary
+                        completion(userDict: passUser, error: nil)
                     }
                 })
             }
         }
+    }
+    
+    
+    func sendUser(dictionary: NSDictionary) -> User {
+        let newUserPath = _user_ref.childByAppendingPath(dictionary["uid"] as! String)
+        newUserPath.setValue(dictionary)
+        _currentUser = User(dictionary: dictionary)
+        return _currentUser!
     }
     
     
@@ -169,7 +175,7 @@ class DataService {
     
     
     
-    
+
     /*POST RELATED FUNCTIONS*/
     func newImage(image: UIImage) {
         

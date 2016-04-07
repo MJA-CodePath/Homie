@@ -7,6 +7,7 @@
 
 import UIKit
 import Firebase
+var authUserDict: NSMutableDictionary?
 
 class CreateAccountViewController: UIViewController {
 
@@ -26,14 +27,14 @@ class CreateAccountViewController: UIViewController {
         let email = emailField.text
         let password = passwordField.text
         if username != "" && email != "" && password != "" {
-            DataService.sharedInstance.createNewAccount(email!, password: password!, username: username!, completion: { (user, error) in
+            DataService.sharedInstance.createNewAccount(email!, password: password!, username: username!, completion: { (userDict, error) in
                 if error != nil {
                     self.signupErrorAlert("Oops!", message: "Having some trouble creating your account. Try again.")
                     print(error)
-                } else if let loggedInUser = user {
-                    User.currentUser = loggedInUser
+                } else if userDict != nil {
+                    authUserDict = userDict
+                    createdUser = true
                     NSNotificationCenter.defaultCenter().postNotificationName(userDidLoginNotification, object: nil)
-                    NSNotificationCenter.defaultCenter().postNotificationName(userWasCreatedNotification, object: nil)
                 } else {
                     self.signupErrorAlert("Oops!", message: "Something went wrong.")
                 }

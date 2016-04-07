@@ -7,13 +7,13 @@
 
 import UIKit
 import MapKit
+var createdUser: Bool?
 
 class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDelegate {
 
     @IBOutlet weak var map: MKMapView!
     @IBOutlet weak var displayControl: UISegmentedControl!
     var toAddCoor: CLLocationCoordinate2D?
-    var added = false
     var eventPins: [PinEvent] = []
     let locationManager = CLLocationManager()
     
@@ -40,7 +40,14 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
                 print("FFFF")
             }
         }
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ViewController.profileSegue), name: userWasCreatedNotification, object: nil)
+    }
+    
+    
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(true)
+        if createdUser == true {
+            performSegueWithIdentifier("profileSegue", sender: true)
+        }
     }
     
     
@@ -48,11 +55,6 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         
     }
     
-    
-    func profileSegue() {
-        performSegueWithIdentifier("profileSegue", sender: true)
-    }
-
     
     @IBAction func onProfileButton(sender: AnyObject) {
         performSegueWithIdentifier("profileSegue", sender: false)
@@ -112,22 +114,21 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "addPinSegue" {
             let vc = segue.destinationViewController as! EventViewController
-            vc.coordinate = toAddCoor
-            if sender == nil {
-                
-            } else if sender as! Bool == true {
+            if sender as? Bool == true {
+                vc.coordinate = toAddCoor
                 vc.editable = true
-            } else if sender as! Bool == false {
+            } else if sender as? Bool == false {
+                vc.coordinate = eventPins[0].coordinate //FIX TO ACCESS ACTUAL COORDINATE
+                vc.pinEvent = eventPins[0]
                 vc.editable = false
             }
         } else if segue.identifier == "profileSegue" {
             let vc = segue.destinationViewController as! ProfileViewController
-            vc.user = User.currentUser
-            if sender == nil {
-                
-            } else if sender as! Bool == true {
+            if sender as? Bool == true {
+                vc.userDict = authUserDict
                 vc.editable = true
-            } else if sender as! Bool == false {
+            } else if sender as? Bool == false {
+                vc.user = _currentUser
                 vc.editable = false
             }
         }
