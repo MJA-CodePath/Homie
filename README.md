@@ -8,17 +8,17 @@ AppName is an app that allows communities to assist the homeless/underpriviliged
 Users of the app will drop a pin at their location when they see someone who needs help. Other users can view these pins, go to those locations, and help the people there.
 
 ### Required stories
-- User is able to sign in using email/facebook/twitter.
+- User is able to sign in using email.
 - User can view all pins placed by other users in a map view.
-- Users can tap on pin to view description, name, items, etc..
+- Users can tap on pin to view description, name, activity, etc..
 - User is able to add a pin and provide pic, location (could use current location), and description.
 
 ### Nice to have:
-- 3D touch to preview pins before opening detailed page.
 - We want to make this app really polished so we will be using custom animations and segues.
+- User is able to sign in and share via Facebook and Twitter.
+- 3D touch to preview pins before opening detailed page.
 - Moderator screen to approve submitted pins
 - City based leaderboard
-- Sharing recent activity to facebook and twitter
 
 
 ## Wireframing:
